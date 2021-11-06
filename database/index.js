@@ -7,12 +7,12 @@ const connectDB = () =>
   new Promise((resolve, reject) => {
     mongoose.connect(process.env.MONGODB_STRING, (error) => {
       if (error) {
-        debug(chalk.red("No se ha podido iniciar la base de datos."));
+        debug(chalk.red("Error trying to conect to BD"));
         debug(chalk.red(error.message));
         reject();
         return;
       }
-      debug(chalk.green("Conectado a la base de datos"));
+      debug(chalk.green("Succesfully connected"));
       resolve();
     });
   });
