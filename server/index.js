@@ -8,13 +8,13 @@ const app = express();
 
 const initializeServer = (port) => {
   const server = app.listen(port, () => {
-    debug(chalk.yellow(`Escuchando en el puerto ${port}`));
+    debug(chalk.yellow(`Listening to port ${port}`));
   });
 
   server.on("error", (error) => {
-    debug(chalk.red("Ha habido un error al iniciar el servidor."));
+    debug(chalk.red("Error launching the server."));
     if (error.code === "EADDRINUSE") {
-      debug(chalk.red(`El puerto ${port} está en uso.`));
+      debug(chalk.red(`Port ${port} its already in use.`));
     }
   });
 };
@@ -22,6 +22,6 @@ const initializeServer = (port) => {
 app.use(morgan("dev"));
 app.use(express.json());
 
-app.use("/robots",robotsRoutes);
+app.use("/robots", robotsRoutes);
 
 module.exports = initializeServer;
