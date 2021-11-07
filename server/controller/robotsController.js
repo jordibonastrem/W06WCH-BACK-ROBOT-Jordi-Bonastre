@@ -6,10 +6,10 @@ const getRobots = async (req, res) => {
 };
 
 const getRobotById = async (req, res, next) => {
-  const { id } = req.params;
+  const { idRobot } = req.params;
 
   try {
-    const searchedPet = await Robot.findById(id);
+    const searchedPet = await Robot.findById(idRobot);
     if (searchedPet) {
       res.json(searchedPet);
     } else {
@@ -46,9 +46,31 @@ const updateRobot = async (req, res, next) => {
     next(error);
   }
 };
+
+const deleteRobot = async (req, res, next) => {
+  console.log("aaaaaaaaaaaaaaaaaaa");
+  const { idRobot } = req.params;
+  console.log("WDSDSA");
+  console.log(idRobot);
+  try {
+    const robot = await Robot.findByIdAndDelete(idRobot);
+    if (robot) {
+      res.json({ idRobot });
+    } else {
+      const error = new Error("This robot doesnt exist");
+      error.code = 404;
+      next(error);
+    }
+  } catch (error) {
+    error.code = 400;
+    next(error);
+  }
+};
+
 module.exports = {
   getRobots,
   getRobotById,
   createRobot,
   updateRobot,
+  deleteRobot,
 };
