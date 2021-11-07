@@ -1,3 +1,4 @@
+const debug = require("debug")("robots:controller");
 const Robot = require("../../database/models/robot");
 
 const getRobots = async (req, res) => {
@@ -6,9 +7,10 @@ const getRobots = async (req, res) => {
 };
 
 const getRobotById = async (req, res, next) => {
-  const { _id } = req.params;
+  const { id } = req.params;
+  console.log(id);
   try {
-    const searchedPet = await Robot.findById(_id);
+    const searchedPet = await Robot.findById(id);
     if (searchedPet) {
       res.json(searchedPet);
     } else {
