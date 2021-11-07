@@ -48,10 +48,7 @@ const updateRobot = async (req, res, next) => {
 };
 
 const deleteRobot = async (req, res, next) => {
-  console.log("aaaaaaaaaaaaaaaaaaa");
   const { idRobot } = req.params;
-  console.log("WDSDSA");
-  console.log(idRobot);
   try {
     const robot = await Robot.findByIdAndDelete(idRobot);
     if (robot) {

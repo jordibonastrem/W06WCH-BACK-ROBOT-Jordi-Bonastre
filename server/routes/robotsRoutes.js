@@ -17,6 +17,6 @@ router.post("/create", createRobot);
 
 router.put("/update", updateRobot);
 
-router.delete("/delete/:idRobot", deleteRobot);
+router.delete("/delete/:idRobot/", deleteRobot);
 
 module.exports = router;
