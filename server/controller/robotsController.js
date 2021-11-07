@@ -1,4 +1,3 @@
-const debug = require("debug")("robots:controller");
 const Robot = require("../../database/models/robot");
 
 const getRobots = async (req, res) => {
@@ -24,7 +23,20 @@ const getRobotById = async (req, res, next) => {
   }
 };
 
+const createRobot = async (req, res, next) => {
+  try {
+    const robot = req.body;
+    const newRobot = await Robot.create(robot);
+    res.json(newRobot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "Error on creating a robot!";
+    next(error);
+  }
+};
+
 module.exports = {
   getRobots,
   getRobotById,
+  createRobot,
 };
