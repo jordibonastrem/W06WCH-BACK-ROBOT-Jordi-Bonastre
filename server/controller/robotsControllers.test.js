@@ -1,5 +1,5 @@
 const Robot = require("../../database/models/robot");
-const { getRobots, getRobotById } = require("./robotsController");
+const { getRobots, getRobotById, createRobot } = require("./robotsController");
 
 jest.mock("../../database/models/robot");
 
@@ -99,6 +99,56 @@ describe("Given a getRobotsById function", () => {
       await getRobotById(req, res);
 
       expect(res.json).toHaveBeenCalledWith(androidv2);
+    });
+  });
+});
+
+describe("Given a createRobot function", () => {
+  describe("When it receives a request ", () => {
+    test("Then it should return a response with the new robot", async () => {
+      const res = {
+        json: jest.fn(),
+      };
+
+      const c3po = {
+        id: 5,
+        name: "c3po",
+        img: "r2d2.org",
+        caracteristics: {
+          velocity: 3,
+          resistence: 3,
+          dateOfCreation: "8/3/2000",
+        },
+      };
+      const req = { body: c3po };
+      Robot.create = jest.fn().mockResolvedValue(c3po);
+
+      await createRobot(req, res, null);
+
+      expect(Robot.create).toHaveBeenCalledWith(c3po);
+      expect(res.json).toHaveBeenCalledWith(c3po);
+    });
+  });
+
+  describe("When its invoked and it rejects", () => {
+    test("then it should invoke next with an error", async () => {
+      const error = {};
+      Robot.create = jest.fn().mockRejectedValue(error);
+
+      const req = {
+        params: {
+          id: 1,
+        },
+      };
+
+      const res = {};
+      const next = jest.fn();
+
+      await createRobot(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(error).toHaveProperty("code");
+      expect(error.code).toBe(400);
     });
   });
 });
