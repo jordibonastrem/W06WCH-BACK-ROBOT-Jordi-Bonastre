@@ -7,7 +7,7 @@ const getRobots = async (req, res) => {
 
 const getRobotById = async (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
+
   try {
     const searchedPet = await Robot.findById(id);
     if (searchedPet) {
@@ -34,9 +34,21 @@ const createRobot = async (req, res, next) => {
     next(error);
   }
 };
-
+const updateRobot = async (req, res, next) => {
+  try {
+    const robot = req.body;
+    const { _id } = robot;
+    const updatedRobot = await Robot.findByIdAndUpdate(_id, robot);
+    res.json(updatedRobot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "There was an error when attempting to update a roboto";
+    next(error);
+  }
+};
 module.exports = {
   getRobots,
   getRobotById,
   createRobot,
+  updateRobot,
 };
