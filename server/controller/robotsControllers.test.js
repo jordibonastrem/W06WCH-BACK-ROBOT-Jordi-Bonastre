@@ -1,5 +1,11 @@
+/* eslint-disable no-underscore-dangle */
 const Robot = require("../../database/models/robot");
-const { getRobots, getRobotById, createRobot } = require("./robotsController");
+const {
+  getRobots,
+  getRobotById,
+  createRobot,
+  updateRobot,
+} = require("./robotsController");
 
 jest.mock("../../database/models/robot");
 
@@ -149,6 +155,65 @@ describe("Given a createRobot function", () => {
       expect(next).toHaveBeenCalledWith(error);
       expect(error).toHaveProperty("code");
       expect(error.code).toBe(400);
+    });
+  });
+});
+
+describe("Given an updateRobot function", () => {
+  describe("When it is invoked with a request with an id and an updated robot", () => {
+    test("Then it should return a res.json with the updated robot", async () => {
+      const res = {
+        json: jest.fn(),
+      };
+
+      const myRobot = {
+        _id: 1,
+        name: "Matt",
+        img: "matt.jpg",
+        caracteristics: {
+          velocity: 311,
+          resistence: 3,
+          dateOfCreation: "3/2/1900",
+        },
+      };
+      const req = { body: myRobot };
+      Robot.findByIdAndUpdate = jest.fn().mockResolvedValue(myRobot);
+
+      await updateRobot(req, res, null);
+
+      expect(Robot.findByIdAndUpdate).toHaveBeenCalledWith(
+        myRobot._id,
+        myRobot
+      );
+    });
+  });
+
+  describe("When it recieves a rejected Promise", () => {
+    test("Then it should invoke the function next with a error inside", async () => {
+      const myRobot = {
+        _id: 1,
+        name: "Matt",
+        img: "matt.jpg",
+        caracteristics: {
+          velocity: 311,
+          resistence: 3,
+          dateOfCreation: "3/2/1900",
+        },
+      };
+
+      const req = {
+        params: myRobot,
+      };
+
+      Robot.findByIdAndUpdate = jest.fn().mockRejectedValue();
+      const next = jest.fn();
+      const res = {
+        json: jest.fn(),
+      };
+
+      await updateRobot(req, res, next);
+
+      expect(next).toHaveBeenCalled();
     });
   });
 });
