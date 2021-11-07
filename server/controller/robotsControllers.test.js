@@ -75,7 +75,7 @@ describe("Given a getRobotsById function", () => {
 
       expect(next).toHaveBeenCalledWith(error);
       expect(error).toHaveProperty("code");
-      expect(error.code).toBe(404);
+      expect(error.code).toBe(400);
     });
   });
 
