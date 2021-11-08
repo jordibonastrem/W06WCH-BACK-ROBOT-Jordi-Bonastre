@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 const connectDB = () =>
   new Promise((resolve, reject) => {
+    mongoose.set("debug", true);
     mongoose.connect(process.env.MONGODB_STRING, (error) => {
       if (error) {
         debug(chalk.red("Error trying to conect to BD"));

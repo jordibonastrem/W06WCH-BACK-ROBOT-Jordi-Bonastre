@@ -22,7 +22,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-//extra
+
 .env
 sonar-project.properties
 .scannerwork
+node_modules

@@ -4,6 +4,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const robotsRoutes = require("./routes/robotsRoutes");
+const usersRoutes = require("./routes/usersRoutes");
 
 const app = express();
 app.use(express.json());
@@ -24,5 +25,5 @@ const initializeServer = (port) => {
 
 app.use(morgan("dev"));
 app.use("/robots", robotsRoutes);
-
+app.use("/users", usersRoutes);
 module.exports = initializeServer;
