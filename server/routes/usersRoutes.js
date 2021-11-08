@@ -8,7 +8,7 @@ const { checkLogin } = require("../controller/usersControlers");
 require("dotenv").config();
 
 const router = express.Router();
-router.get("/", checkLogin);
+router.post("/", checkLogin);
 // router.get("/", async (req, res) => {
 //   mongoose.set("debug", true);
 //   const user = await User.create({
