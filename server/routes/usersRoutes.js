@@ -1,21 +1,15 @@
 /* eslint-disable no-unused-vars */
+const { validate } = require("express-validation");
 const express = require("express");
 const bcrypt = require("bcrypt");
-const { validate, ValidationError, Joi } = require("express-validation");
 
 const mongoose = require("mongoose");
 const User = require("../../database/models/user");
 const { checkLogin } = require("../controller/usersControlers");
+const { requestSchema } = require("../schemas/requestSchema");
 require("dotenv").config();
 
 const router = express.Router();
-
-const requestSchema = {
-  body: Joi.object({
-    name: Joi.string().required(),
-    password: Joi.string().required(),
-  }),
-};
 
 router.post("/login", validate(requestSchema), checkLogin);
 // router.get("/", async (req, res) => {
