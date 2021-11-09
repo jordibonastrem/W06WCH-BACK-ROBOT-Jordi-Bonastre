@@ -1,5 +1,9 @@
 const { ValidationError } = require("express-validation");
 
+const notFoundErrorHandler = (req, res) => {
+  res.status(404).json({ error: "Endpoint not found" });
+};
+
 // eslint-disable-next-line no-unused-vars
 const generalErrorHandler = (error, req, res, next) => {
   if (error instanceof ValidationError) {
@@ -13,6 +17,7 @@ const generalErrorHandler = (error, req, res, next) => {
 
 module.exports = {
   generalErrorHandler,
+  notFoundErrorHandler,
 };
 
 // generalError
