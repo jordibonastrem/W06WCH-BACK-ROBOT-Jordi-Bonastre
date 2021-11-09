@@ -1,11 +1,14 @@
 const chalk = require("chalk");
-const debug = require("debug")("robots:server");
+const debug = require("debug")("");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const robotsRoutes = require("./routes/robotsRoutes");
 const usersRoutes = require("./routes/usersRoutes");
-const { generalErrorHandler } = require("./middlewares/error");
+const {
+  generalErrorHandler,
+  notFoundErrorHandler,
+} = require("./middlewares/error");
 
 const app = express();
 app.use(express.json());
@@ -27,5 +30,7 @@ const initializeServer = (port) => {
 app.use(morgan("dev"));
 app.use("/robots", robotsRoutes);
 app.use("/users", usersRoutes);
+
 app.use(generalErrorHandler);
+app.use(notFoundErrorHandler);
 module.exports = initializeServer;

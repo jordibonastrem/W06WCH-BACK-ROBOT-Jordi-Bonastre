@@ -4,28 +4,31 @@ const User = require("../../database/models/user");
 
 const checkLogin = async (req, res, next) => {
   const { name, password } = req.body;
+  const user = await User.findOne({ name });
 
-  try {
-    const user = await User.findOne({ name });
-    console.log(user.name);
-    console.log(user.password);
+  if (!user) {
+    const error = new Error("Autentification Failed");
+    error.code = 401;
+    next(error);
+  } else {
     const rightPassword = await bcrypt.compare(password, user.password);
-
-    if (rightPassword) {
-      const token = await jwt.sign(
-        { name, password: user.password },
-        process.env.SECRET
-      );
-      res.json({ token });
-    } else {
-      const error = new Error("Wrong credentials");
+    if (!rightPassword) {
+      const error = new Error("Autentification Faailed");
       error.code = 401;
       next(error);
+    } else {
+      const token = jwt.sign(
+        {
+          id: user.id,
+          name: user.name,
+        },
+        process.env.SECRET,
+        {
+          expiresIn: 24 * 60 * 60,
+        }
+      );
+      res.json({ token });
     }
-  } catch (error) {
-    error.code = 400;
-    error.message = "Authentification failed";
-    next(error);
   }
 };
 
