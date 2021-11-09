@@ -11,7 +11,10 @@ require("dotenv").config();
 
 const router = express.Router();
 
+
 router.post("/login", validate(requestSchema), checkLogin);
+
+
 // router.get("/", async (req, res) => {
 //   mongoose.set("debug", true);
 //   const user = await User.create({
