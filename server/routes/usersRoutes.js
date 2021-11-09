@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const express = require("express");
 const bcrypt = require("bcrypt");
+const { validate, ValidationError, Joi } = require("express-validation");
 
 const mongoose = require("mongoose");
 const User = require("../../database/models/user");
@@ -8,7 +9,15 @@ const { checkLogin } = require("../controller/usersControlers");
 require("dotenv").config();
 
 const router = express.Router();
-router.get("/", checkLogin);
+
+const requestSchema = {
+  body: Joi.object({
+    name: Joi.string().required(),
+    password: Joi.string().required(),
+  }),
+};
+
+router.post("/login", validate(requestSchema), checkLogin);
 // router.get("/", async (req, res) => {
 //   mongoose.set("debug", true);
 //   const user = await User.create({
